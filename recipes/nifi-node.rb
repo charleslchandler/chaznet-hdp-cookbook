@@ -6,7 +6,7 @@
 
 include_recipe 'chaznet-hdp::nifi'
 
-manager_fqdn = 'hdp01-nifi-ncm.chaznet.local'
+manager_fqdn = node['nifi']['cluster_manager']
 #manager_fqdn = search(:node, 'recipes:"chaznet-hdp::nifi-cluster-manager"').first[:fqdn]
 node_fqdn = node[:fqdn]
 

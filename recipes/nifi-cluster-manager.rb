@@ -7,7 +7,8 @@
 include_recipe 'chaznet-hdp::nifi'
 
 #manager_fqdn = 'hdp01-nifi-ncm.chaznet.local'
-manager_fqdn = node[:fqdn]
+#manager_fqdn = node[:fqdn]
+manager_fqdn = node['nifi']['cluster_manager']
 
 template '/opt/nifi/conf/nifi.properties' do
   source 'nifi.properties.erb'
