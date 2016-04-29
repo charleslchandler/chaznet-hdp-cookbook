@@ -83,3 +83,18 @@ cookbook_file "#{install_dir}/nifi-#{version}/conf/logback.xml" do
   mode '0644'
   action :create
 end
+
+zk_connect_string = %x[grep '^server\.[0-9]*=' /etc/zookeeper/conf/zoo.cfg | cut -d= -f 2].chomp.gsub(/\n/, ",")
+
+template "#{install_dir}/nifi-#{version}/conf/state-management.xml" do
+  source 'nifi-state-management.xml.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  variables({
+    nifi_zk_connect_string: zk_connect_string,
+    nifi_state_root_node: node['nifi']['state_management']['root_node']
+  })
+  action :create
+end
+
