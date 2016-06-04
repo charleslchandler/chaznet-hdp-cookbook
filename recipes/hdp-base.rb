@@ -4,9 +4,8 @@
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 
-#public_ip       = %x(curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4).chomp
-
-fqdn            = "#{node.name}.chaznet.local"
+public_ip       = node['public_ip']
+fqdn            = "#{node.name}.#{node['dns']['domain_name']}"
 platform        = node[:platform]
 release_version = node[:platform_version].to_i
 artifact_uri    = node[:artifacts][:base_uri]
@@ -71,7 +70,7 @@ when 'ubuntu', 'deban'
 
 end
 
-%w(curl ntp openssl python zlib wget unzip openssh-clients).each do |pkg|
+%w(haveged curl ntp openssl python zlib wget unzip openssh-clients).each do |pkg|
   package pkg
 end
 
