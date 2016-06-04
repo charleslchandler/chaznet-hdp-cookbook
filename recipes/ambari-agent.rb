@@ -8,7 +8,8 @@ include_recipe "chaznet-hdp::ambari"
 
 package 'ambari-agent'
 
-platform = node[:platform]
+platform        = node[:platform]
+release_version = node[:platform_version].to_i
 
 case platform
 when 'ubuntu'
@@ -53,4 +54,17 @@ end
 
 service 'ambari-agent' do
   action [ :enable, :start ]
+end
+
+case platform
+when 'redhat', 'centos'
+
+  if release_version >= 7
+    # not sure why but the service resource doesn't seem to actually enable/start ambari-agent on centos7
+
+    execute 'ensure enable of ambari-agent' do
+      command 'systemctl enable ambari-agent'
+    end
+  end
+
 end
