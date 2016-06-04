@@ -2,7 +2,7 @@
 # Cookbook Name:: chaznet-hdp
 # Recipe:: hdp-base
 #
-# Copyright (c) 2016 The Authors, All Rights Reserved.
+# Copyright (c) 2016 Chaz Chandler, All Rights Reserved.
 
 public_ip       = node['public_ip']
 fqdn            = "#{node.name}.#{node['dns']['domain_name']}"

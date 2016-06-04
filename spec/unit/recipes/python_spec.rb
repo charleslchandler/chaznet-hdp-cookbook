@@ -2,7 +2,7 @@
 # Cookbook Name:: chaznet-hdp
 # Spec:: default
 #
-# Copyright (c) 2016 The Authors, All Rights Reserved.
+# Copyright (c) 2016 Chaz Chandler, All Rights Reserved.
 
 require 'spec_helper'
 

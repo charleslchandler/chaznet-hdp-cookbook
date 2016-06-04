@@ -2,7 +2,7 @@
 # Cookbook Name:: chaznet-hdp
 # Recipe:: nifi-node
 #
-# Copyright (c) 2016 The Authors, All Rights Reserved.
+# Copyright (c) 2016 Chaz Chandler, All Rights Reserved.
 
 include_recipe 'chaznet-hdp::nifi'
 

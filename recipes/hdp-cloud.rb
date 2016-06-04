@@ -2,7 +2,7 @@
 # Cookbook Name:: chaznet-hdp
 # Recipe:: hdp-cloud
 #
-# Copyright (c) 2016 The Authors, All Rights Reserved.
+# Copyright (c) 2016 Chaz Chandler, All Rights Reserved.
 
 require_recipe 'chaznet-hdp::hdp-base'
 
