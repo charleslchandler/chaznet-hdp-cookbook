@@ -132,3 +132,7 @@ end
 service 'ip6tables' do
   action [:stop, :disable]
 end
+
+service 'haveged' do
+  action [:enable, :start]
+end
