@@ -5,7 +5,8 @@
 # Copyright (c) 2016 Chaz Chandler, All Rights Reserved.
 
 public_ip       = node['public_ip']
-fqdn            = "#{node.name}.#{node['dns']['domain_name']}"
+domain          = node['dns']['domain_name']
+fqdn            = "#{node.name}.#{domain}"
 platform        = node[:platform]
 release_version = node[:platform_version].to_i
 artifact_uri    = node[:artifacts][:base_uri]
@@ -97,15 +98,6 @@ execute 'disable IPv6 now' do
   command "/sbin/sysctl -e -p #{sysctl_ipv6_disabler}"
 end
 
-template '/etc/hostname' do
-  source 'hostname.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  variables({hostname: fqdn})
-  action :create
-end
-
 execute 'ensure hostname is in /etc/hosts' do
   command "echo '#{node[:ipaddress]} #{fqdn} #{node.name}' >> /etc/hosts"
   not_if "grep '^#{node[:ipaddress]} #{fqdn}' /etc/hosts"
@@ -116,12 +108,28 @@ execute 'ensure public IP is in /etc/hosts' do
   not_if "grep '^#{public_ip} #{fqdn}' /etc/hosts"
 end
 
-template '/etc/sysconfig/network' do
-  source 'sysconfig-network.erb'
+execute 'set hostname now' do
+  command "hostname '#{node.name}' && domainname '#{domain}'"
+  not_if "hostname -f | grep '^#{fqdn}$'"
+end
+
+#template '/etc/cloud/cloud.cfg' do
+#  source 'etc-cloud-cloud.cfg.erb'
+#  owner 'root'
+#  group 'root'
+#  mode '0644'
+#  action :create
+#end
+
+template '/etc/cloud/cloud.cfg.d/99_hostname.cfg' do
+  source 'etc-cloud-cloud.cfg.d-99_hostname.cfg.erb'
   owner 'root'
   group 'root'
   mode '0644'
-  variables({hostname: fqdn})
+  variables({
+    hostname: node.name,
+    fqdn: fqdn
+  })
   action :create
 end
 
@@ -136,3 +144,5 @@ end
 service 'haveged' do
   action [:enable, :start]
 end
+
+require_recipe 'chaznet-hdp::accumulo'
