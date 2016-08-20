@@ -65,13 +65,18 @@ link "#{install_dir}/nifi" do
   link_type :symbolic
 end
 
+mb_ram = node['memory']['total'][0..-3].to_i / 1024
+
+
 template "#{install_dir}/nifi-#{version}/conf/bootstrap.conf" do
   source 'nifi-bootstrap.conf.erb'
   owner 'root'
   group 'root'
   mode '0644'
   variables({
-    username: username
+    username: username,
+    max_heap_mb: (mb_ram * 0.60).to_i,
+    min_heap_mb: (mb_ram * 0.30).to_i
   })
   action :create
 end

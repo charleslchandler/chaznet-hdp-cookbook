@@ -32,8 +32,8 @@ graceful.shutdown.seconds=20
 java.arg.1=-Dorg.apache.jasper.compiler.disablejsr199=true
 
 # JVM memory settings
-java.arg.2=-Xms2048m
-java.arg.3=-Xmx3840m
+java.arg.2=-Xms<%= @min_heap_mb %>m
+java.arg.3=-Xmx<%= @max_heap_mb %>m
 
 # Enable Remote Debugging
 #java.arg.debug=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
