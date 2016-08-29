@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export ambari_services="<%= @ambari_services.join(' ') %>"
+export cluster_name="<%= @cluster_name %>"
+export deploy="false"
+
+bash ./deploy-recommended-cluster.bash

@@ -28,6 +28,19 @@ when 'redhat', 'centos'
     service 'firewalld' do
       action [:stop, :disable]
     end
+
+    sysctl_ipv6_disabler = '/etc/sysctl.d/99-hadoop-ipv6.conf'
+    cookbook_file sysctl_ipv6_disabler do
+      source 'sysctl-99-hadoop-ipv6.conf'
+      owner 'root'
+      group 'root'
+      mode '0644'
+      action :create
+    end
+
+    execute 'disable IPv6 now' do
+      command "/sbin/sysctl -e -p #{sysctl_ipv6_disabler}"
+    end
   end
 
   #yum_repository "HDP-#{hdp_version.to_f}" do
@@ -83,19 +96,6 @@ end
 execute 'persist disablement of THP' do
   command "echo \"echo 'never' > #{defrag_filename_path}\" >> /etc/rc.local"
   not_if "grep \"echo 'never' > #{defrag_filename_path}\" /etc/rc.local"
-end
-
-sysctl_ipv6_disabler = '/etc/sysctl.d/99-hadoop-ipv6.conf'
-cookbook_file sysctl_ipv6_disabler do
-  source 'sysctl-99-hadoop-ipv6.conf'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-end
-
-execute 'disable IPv6 now' do
-  command "/sbin/sysctl -e -p #{sysctl_ipv6_disabler}"
 end
 
 execute 'ensure hostname is in /etc/hosts' do
