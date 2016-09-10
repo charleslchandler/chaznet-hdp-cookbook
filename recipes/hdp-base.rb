@@ -25,6 +25,7 @@ when 'redhat', 'centos'
   end
 
   if release_version == 7
+
     service 'firewalld' do
       action [:stop, :disable]
     end
@@ -41,25 +42,16 @@ when 'redhat', 'centos'
     execute 'disable IPv6 now' do
       command "/sbin/sysctl -e -p #{sysctl_ipv6_disabler}"
     end
+
+  elsif release_version == 6
+
+    link '/etc/init.d/mysqld' do
+      to '/etc/init.d/mysql'
+      not_if 'test -e /etc/init.d/mysqld'
+      only_if 'test -e /etc/init.d/mysql'
+    end
+
   end
-
-  #yum_repository "HDP-#{hdp_version.to_f}" do
-  #  description "HDP-#{hdp_version.to_f}"
-  #  baseurl "#{artifact_uri}/HDP/centos$releasever/2.x/updates/#{hdp_version}"
-  #  gpgkey "#{artifact_uri}/HDP/centos$releasever/2.x/updates/#{hdp_version}/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins"
-  #  gpgcheck true
-  #  action :create
-  #  proxy '_none_'
-  #end
-
-  #yum_repository "HDP-UTILS" do
-  #  description "HDP-UTILS-1.1.0.20"
-  #  baseurl "#{artifact_uri}/HDP-UTILS-1.1.0.20/repos/centos$releasever"
-  #  gpgkey "#{artifact_uri}/HDP-UTILS-1.1.0.20/repos/centos$releasever/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins"
-  #  gpgcheck true
-  #  action :create
-  #  proxy '_none_'
-  #end
 
   cookbook_file '/etc/sudoers.d/888-dont-requiretty' do
     source 'sudoers-888-dont-requiretty'
@@ -71,16 +63,6 @@ when 'redhat', 'centos'
 
 when 'ubuntu', 'deban'
   defrag_filename_path = '/sys/kernel/mm/transparent_hugepage/defrag'
-
-  #apt_repository "HDP-#{hdp_version.to_f}" do
-  #  uri "#{artifact_uri}/HDP/ubuntu14/2.x/updates/#{hdp_version}"
-  #  components ['main']
-  #  distribution 'Ambari'
-  #  key 'B9733A7A07513CAD'
-  #  keyserver 'keyserver.ubuntu.com'
-  #  action :add
-  #  deb_src false
-  #end
 
 end
 
@@ -112,14 +94,6 @@ execute 'set hostname now' do
   command "hostname '#{node.name}' && domainname '#{domain}'"
   not_if "hostname -f | grep '^#{fqdn}$'"
 end
-
-#template '/etc/cloud/cloud.cfg' do
-#  source 'etc-cloud-cloud.cfg.erb'
-#  owner 'root'
-#  group 'root'
-#  mode '0644'
-#  action :create
-#end
 
 template '/etc/cloud/cloud.cfg.d/99_hostname.cfg' do
   source 'etc-cloud-cloud.cfg.d-99_hostname.cfg.erb'
