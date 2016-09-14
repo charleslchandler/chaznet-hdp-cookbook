@@ -1,4 +1,8 @@
 # chaznet-hdp
 
-TODO: Enter the cookbook description here.
+Apache NiFi
+===========
 
+You'll need to generate a NiFi sensitive key using:
+
+`openssl rand -hex 32`

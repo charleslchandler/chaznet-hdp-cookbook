@@ -1,6 +1,6 @@
-default['nifi']['manager_port'] = 10240
 default['nifi']['node_port']    = 10241
 default['nifi']['install_dir']  = '/opt'
 default['nifi']['username']     = 'nifi'
-#default['nifi']['version']      = '0.4.1'
-#default['nifi']['sha256']       = 'cdd7a2ea0467bc3e5d987d6fc93965e0e1ef7b96de8f61459f620c04ec54ec80'
+default['nifi']['version']      = '1.0.0'
+default['nifi']['sha256']       = '2b06f389b5e328614e0e2c7add22e6e192917a9e375aa0798835552c670923a8'
+default['nifi']['is_clustered'] = false

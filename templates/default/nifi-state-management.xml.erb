@@ -58,8 +58,8 @@
     <cluster-provider>
         <id>zk-provider</id>
         <class>org.apache.nifi.controller.state.providers.zookeeper.ZooKeeperStateProvider</class>
-        <property name="Connect String"><%= @nifi_zk_connect_string %></property>
-        <property name="Root Node"><%= @nifi_state_root_node %></property>
+        <property name="Connect String"><%= @zk_hostports.join(',') %></property>
+        <property name="Root Node"><%= @state_root_node %></property>
         <property name="Session Timeout">30 seconds</property>
         <property name="Access Control">CreatorOnly</property>
         <property name="Username">nifi</property>
