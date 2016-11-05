@@ -8,7 +8,7 @@ require_recipe "chaznet-hdp::ambari"
 
 hdp_version       = node[:hdp][:version]
 hdp_utils_version = node[:hdp][:utils_version]
-artifact_uri      = node['artifacts']['base_uri']
+artifacts_uri     = node['artifacts']['base_uri']
 platform          = node[:platform]
 platform_version  = node[:platform_version].to_i
 standard_services = node['ambari']['standard_services']
@@ -58,7 +58,7 @@ template '/usr/local/bin/update_hdp_repos.sh' do
     hdp_utils_version: hdp_utils_version,
     ambari_platform:   ambari_platform,
     hdp_platform:      hdp_platform,
-    artifact_uri:      artifact_uri  
+    artifacts_uri:     artifacts_uri  
   })
 end
 

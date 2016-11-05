@@ -9,8 +9,9 @@ domain          = node['dns']['domain_name']
 fqdn            = "#{node.name}.#{domain}"
 platform        = node[:platform]
 release_version = node[:platform_version].to_i
-artifact_uri    = node[:artifacts][:base_uri]
+artifacts_uri   = node[:artifacts][:base_uri]
 hdp_version     = node[:hdp][:version]
+mjc_version     = node[:hdp][:mysql_java_connector][:version]
 
 require_recipe 'chaznet-base::development-java'
 
@@ -59,6 +60,15 @@ when 'redhat', 'centos'
     group 'root'
     mode '0644'
     action :create
+  end
+
+  remote_file "/usr/share/java/mysql-connector-java-#{mjc_version}-bin.jar" do
+    source   "#{artifacts_uri}/java/mysql-connector-java-#{mjc_version}-bin.jar"
+    checksum node[:hdp][:mysql_java_connector][:sha256]
+  end
+
+  link '/usr/share/java/mysql-connector-java.jar' do
+    to "/usr/share/java/mysql-connector-java-#{mjc_version}-bin.jar"
   end
 
 when 'ubuntu', 'deban'

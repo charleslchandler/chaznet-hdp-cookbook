@@ -2,14 +2,14 @@
 
 curl -X PUT -u admin:admin -H  X-Requested-By:ambari http://localhost:8080/api/v1/stacks/HDP/versions/<%= @hdp_version.to_f %>/operating_systems/<%= @ambari_platform %>/repositories/HDP-<%= @hdp_version.to_f %> -d '{
   "Repositories" : {
-    "base_url" : "<%= @artifact_uri %>/HDP/<%= @hdp_platform %>/2.x/base/<%= @hdp_version %>/",
+    "base_url" : "<%= @artifacts_uri %>/HDP/<%= @hdp_platform %>/2.x/base/<%= @hdp_version %>/",
     "verify_base_url" : true
   }
 }'
 
 curl -X PUT -u admin:admin -H  X-Requested-By:ambari http://localhost:8080/api/v1/stacks/HDP/versions/<%= @hdp_version.to_f %>/operating_systems/<%= @ambari_platform %>/repositories/HDP-UTILS-<%= @hdp_utils_version %> -d '{
   "Repositories" : {
-    "base_url" : "<%= @artifact_uri %>/HDP-UTILS-<%= @hdp_utils_version %>/repos/<%= @hdp_platform %>/",
+    "base_url" : "<%= @artifacts_uri %>/HDP-UTILS-<%= @hdp_utils_version %>/repos/<%= @hdp_platform %>/",
     "verify_base_url" : true
   }
 }'

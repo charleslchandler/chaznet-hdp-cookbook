@@ -8,7 +8,7 @@ platform = node[:platform]
 platform_version = node[:platform_version].to_i
 
 ambari_version = node['ambari']['version']
-artifact_uri   = node['artifacts']['base_uri']
+artifacts_uri  = node['artifacts']['base_uri']
 
 case platform
 when 'ubuntu'
@@ -16,7 +16,7 @@ when 'ubuntu'
   ambari_platform = "ubuntu#{platform_version}"
 
   apt_repository 'ambari' do
-    uri "#{artifact_uri}/AMBARI/#{ambari_platform}/#{ambari_version}"
+    uri "#{artifacts_uri}/AMBARI/#{ambari_platform}/#{ambari_version}"
     #uri "http://s3.amazonaws.com/dev.hortonworks.com/ambari/ubuntu12/2.x/BUILDS/#{ambari_version}"
     components ['main']
     distribution 'Ambari'
@@ -32,9 +32,9 @@ when 'redhat', 'centos'
 
   yum_repository "Updates-ambari-#{ambari_version}" do
     description "ambari-#{ambari_version} - Updates"
-    baseurl "#{artifact_uri}/AMBARI/#{ambari_platform}/#{ambari_version}"
+    baseurl "#{artifacts_uri}/AMBARI/#{ambari_platform}/#{ambari_version}"
     #baseurl "http://public-repo-1.hortonworks.com/ambari/centos$releasever/2.x/updates/#{ambari_version}"
-    gpgkey "#{artifact_uri}/AMBARI/#{ambari_platform}/#{ambari_version}/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins"
+    gpgkey "#{artifacts_uri}/AMBARI/#{ambari_platform}/#{ambari_version}/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins"
     gpgcheck true
     action :create
     proxy '_none_'
